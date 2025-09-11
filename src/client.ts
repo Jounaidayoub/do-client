@@ -85,8 +85,8 @@ console.log("connection with ", WS_URL);
 
 const spinner = ora(`Connecting to ${chalk.bold(WS_URL)}...`).start();
 
-const ws = new WebSocket(WS_URL);
 const launchproxy = async () => {
+  const ws = new WebSocket(WS_URL);
   ws.on("open", async () => {
     spinner.succeed();
     console.log(`🌐 Forwarding to: ${chalk.cyan(LOCAL_BASE)}`);
@@ -197,7 +197,7 @@ const launchproxy = async () => {
   });
 
   ws.on("close", (code, reason) => {
-    console.log("WebSocket closed:", code, reason);
+    console.log(chalk.red("❌ Connection to the server is  closed"));
     console.debug(`❌ Disconnected from WebSocket server: ${code} - ${reason}`);
 
     if (code === 1009) {
@@ -206,6 +206,8 @@ const launchproxy = async () => {
           "❌ Message too big. Please try to reduce the size of your requests."
         )
       );
+      console.log(chalk.yellow("🔁 Retrying ..."));
+      launchproxy();
     }
   });
 };
