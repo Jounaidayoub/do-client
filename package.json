@@ -1,8 +1,10 @@
 {
   "type": "module",
   "dependencies": {
+    "@types/inquirer": "^9.0.9",
     "@types/ws": "^8.18.1",
     "init": "^0.1.2",
+    "inquirer": "^12.9.4",
     "pnpm": "^10.15.1",
     "ws": "^8.18.3"
   }
