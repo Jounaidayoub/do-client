@@ -1,13 +1,13 @@
 # doTunnel
 
-Expose your local server to the internet without configuring firewalls or port forwarding. `DoTunnel` creates a secure HTTP tunnel so you can share your localhost with the internet in seconds.
+Expose your local server to the internet without configuring firewalls or port forwarding. `Dotunnel` creates a secure HTTP tunnel so you can share your localhost with the internet in seconds.
 
 ## Features
 
-- HTTP tunneling 
-- Zero firewall or port-forwarding setup  
+- HTTP tunneling
+- Zero firewall or port-forwarding setup
 - Single-command startup with `npx`
-- Runs on Cloudflare Edge network for low latency (⚡ Blaazingly fast! lol)  
+- Runs on Cloudflare Edge network for low latency (⚡ Blazingly fast!)
 
 ## Quick Start
 
@@ -19,9 +19,28 @@ npx dotunnel
 
 By default, this will:
 
-1. Start a tunnel to your `localhost:3000`  
-2. Output a public URL (e.g. `https://xyz123.do-tunnel.app`)  
-3. Forward requests from the public URL to your local server  
+1. Prompt you for your local port (e.g.: 3000)
+2. Ask for a name for your proxy (e.g.: `my-app`)
+3. Output a public URL (e.g. `https://my-app-prxy.ayooub.me`)
+4. ✅ Forward requests from the public URL to your local server
+
+### Example Usage
+
+When you run `npx dotunnel`, you’ll see:
+
+```bash
+$ npx dotunnel
+
+
+? Enter the local port of the service to expose (e.g., 8000): 3000
+? Enter a name for the proxy (e.g., todo): todo-api
+
+
+🌐 Forwarding to: http://localhost:3000
+🔗 Public URL:    https://todo-api-prxy.ayooub.me
+```
+
+Currently, all options are configured via an interactive prompt. Flags (e.g. `-p`, `--port`) will be supported Soon !!.
 
 ### Install globally
 
@@ -32,45 +51,14 @@ dotunnel
 
 Use the `-g` or `--global` flag to install once and run via `dotunnel` instead of `npx`.
 
-## Command-Line Options
-
-```bash
-dotunnel [options]
-```
-
-- `-p, --port <number>`  
-    Specify the local port (default: 3000)
-
-- `-h, --help`  
-    Show help information
-
-- `-v, --version`  
-    Display the current version
-
-## Examples
-
-Expose port 8080 with one command:
-
-```bash
-npx dotunnel -p 8080
-```
-
-After running, you’ll see output like:
-
-```
-🚀 Tunnel established!
-🔗 Public URL:  https://abc123.do-tunnel.app
-🖥  Forwarding to localhost:8080
-```
-
 ## Contributing
 
-1. Fork the repository  
-2. Create a feature branch (`git checkout -b feature-name`)  
-3. Commit your changes (`git commit -m 'Add new feature'`)  
-4. Push to the branch (`git push origin feature-name`)  
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m "Add new feature"`)
+4. Push to the branch (`git push origin feature-name`)
 5. Open a Pull Request
 
 ## License
 
-MIT © Your Name  
+MIT © Your Name
