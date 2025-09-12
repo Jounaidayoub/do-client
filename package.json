@@ -1,4 +1,17 @@
 {
+  "displayName": "DoTunnel Client",
+  "name": "dotunnel",
+  "version": "0.0.3",
+  "description": " A CLI client for DoTunnel , a service to expose your local server to the internet easily and securely.",
+  "bin": {
+    "dotunnel": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "dependencies": {
     "@types/inquirer": "^9.0.9",
