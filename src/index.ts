@@ -4,6 +4,31 @@ import inquirer from "inquirer"; // install: npm install inquirer
 import ora from "ora"; // install: npm install ora
 import chalk from "chalk";
 import chalkTemplate from "chalk-template"; // install: npm install chalk-template@1
+// import {} } from "jose"; // install: npm install jose
+// import { sign } from "jose";
+const BASE_HOST = "proxy.ayooub.me"; // remote server
+// const BASE_HOST = "localhost:8787"; // remote server
+
+const isProxyAvailable = async (proxy: string) => {
+  try {
+    let res = await fetch(`http://${BASE_HOST}/is-available/${proxy}`, {
+      method: "GET",
+      headers: {
+        client: "dotunnel-node-cli-client",
+      },
+    });
+    let data = await res.json();
+    const available = data.available;
+    if (available) {
+      return true;
+    }
+  } catch (error) {
+    console.error("Error checking proxy availability form KV ", error);
+    return false;
+  }
+
+  return false;
+};
 
 const isPortopen = async (port: number) => {
   try {
@@ -20,7 +45,13 @@ const getProxyName = async () => {
       type: "input",
       name: "proxyName",
       message: "Enter a name for the proxy (e.g., todo):",
-      validate: (input) => input.trim() !== "" || "Proxy name cannot be empty",
+      validate: async (input) => {
+        if (!input || input.trim() === "") {
+          return "Proxy name cannot be empty";
+        }
+        const available = await isProxyAvailable(input);
+        return available || "Proxy name is already taken , Choose another one.";
+      },
     },
   ]);
   return answers.proxyName.trim();
@@ -43,7 +74,6 @@ const getOpenPorts = async () => {
   ]);
   return parseInt(answers.port, 10);
 };
-
 
 function createBanner(toolName: string, width: number | null = null): string {
   // Auto-size width if not provided
@@ -79,17 +109,15 @@ function createBanner(toolName: string, width: number | null = null): string {
 
 // Example banner showing local service to public URL mapping
 function showExampleBanner() {
-  const localUrl = chalk.bold.cyan('http://localhost:8000');
-  const arrow = chalk.bold.yellow('→');
-  const publicUrl = chalk.bold.green('https://todo-prxy.ayooub.me');
+  const localUrl = chalk.bold.cyan("http://localhost:8000");
+  const arrow = chalk.bold.yellow("→");
+  const publicUrl = chalk.bold.green("https://todo-prxy.ayooub.me");
 
-  console.log('');
-  console.log(chalk.bold.blue('Example:'));
+  console.log("");
+  console.log(chalk.bold.blue("Example:"));
   console.log(` ${localUrl} ${arrow} ${publicUrl}`);
-  console.log('');
+  console.log("");
 }
-
-
 
 function showBanner() {
   //   const banner = chalkTemplate`
@@ -148,15 +176,47 @@ async function main() {
 
   const PROXY_NAME = await getProxyName();
 
-  const WS_URL = `wss://proxy.ayooub.me/${PROXY_NAME}`; // remote websocket server
+  // const WS_URL = `ws://${BASE_HOST}/register/${PROXY_NAME}`; // remote websocket server
+  const WS_URL = `wss://${BASE_HOST}/register/${PROXY_NAME}`; // remote websocket server
 
   console.debug("connection with ", WS_URL);
 
   const spinner = ora(`Connecting to our proxy server...`).start();
 
   const launchproxy = async () => {
-    const ws = new WebSocket(WS_URL);
-    ws.on("open", async () => {
+    let ws: WebSocket | null;
+    try {
+      ws = new WebSocket(WS_URL, {
+        headers: {
+          client: "dotunnel-node-cli-client",
+        },
+      });
+    } catch (error) {
+      console.error("Failed to create WebSocket:", error);
+      return;
+    }
+
+    ws.on("unexpected-response", (req, res) => {
+      spinner.fail();
+      console.debug(
+        chalk.red(
+          `❌ Connection failed with status ${res.statusCode} ${res.statusMessage}`
+        )
+      );
+
+      if (res.statusCode === 409) {
+        console.error(chalk.red("❌ Proxy name is already taken."));
+        // awaitgetProxyName()
+        process.exit(1);
+      } else {
+        console.error(
+          chalk.red("❌ Unable to connect to the server. Please retry later.")
+        );
+      }
+      ws!.close();
+    });
+
+    ws!.on("open", async () => {
       spinner.succeed();
       console.log(`🌐 Forwarding to: ${chalk.cyan(LOCAL_BASE)}`);
       console.log(
@@ -269,7 +329,8 @@ async function main() {
       }
     });
 
-    ws.on("close", (code, reason) => {
+    ws.on("close", async (code, reason) => {
+            
       console.log(chalk.red("❌ Connection to the server is  closed"));
       console.debug(
         `❌ Disconnected from WebSocket server: ${code} - ${reason}`
