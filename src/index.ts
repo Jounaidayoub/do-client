@@ -46,10 +46,20 @@ const getProxyName = async () => {
       name: "proxyName",
       message: "Enter a name for the proxy (e.g., todo):",
       validate: async (input) => {
+        // Only allow valid subdomain characters: a-z, 0-9, and hyphens (no leading/trailing hyphens, max 63 chars)
+        const subdomain = input
+          .toLowerCase()
+          .replace(/[^a-z0-9-]/g, "")
+          .replace(/^-+|-+$/g, "")
+          .slice(0, 63);
+
+        if (subdomain !== input) {
+          return "Proxy name must be a valid subdomain (letters, numbers, hyphens, max 63 chars, no leading/trailing hyphens).";
+        }
         if (!input || input.trim() === "") {
           return "Proxy name cannot be empty";
         }
-        const available = await isProxyAvailable(input);
+        const available = await isProxyAvailable(subdomain);
         return available || "Proxy name is already taken , Choose another one.";
       },
     },
@@ -330,7 +340,6 @@ async function main() {
     });
 
     ws.on("close", async (code, reason) => {
-            
       console.log(chalk.red("❌ Connection to the server is  closed"));
       console.debug(
         `❌ Disconnected from WebSocket server: ${code} - ${reason}`
