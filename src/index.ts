@@ -234,6 +234,8 @@ async function main() {
           `https://${PROXY_NAME}-prxy.ayooub.me`
         )}`
       );
+      console.log("")
+      console.log("")
     });
 
     ws.on("message", async (data) => {
@@ -292,11 +294,6 @@ async function main() {
           return;
         }
         const statusColor = getStatusColor(res!.status);
-        console.log(
-          `[${headers?.["x-real-ip"]}] ${chalk[statusColor](
-            res!.status
-          )}  ${method}  > ${path}  `
-        );
 
         const contentType = res!.headers.get("content-type") || "";
         const isBinaryResponse =
@@ -317,16 +314,38 @@ async function main() {
         }
 
         // Send response back
-        ws.send(
-          JSON.stringify({
-            id,
-            status: res!.status,
+        const tunnelres = JSON.stringify({
+          id,
+          status: res!.status,
 
-            headers: Object.fromEntries(res!.headers.entries()),
-            body: responseBody,
-            isBinary: isBinaryResponse,
-          })
+          headers: Object.fromEntries(res!.headers.entries()),
+          body: responseBody,
+          isBinary: isBinaryResponse,
+        });
+
+        const tunnelresSize = Buffer.byteLength(tunnelres, "utf8");
+        if (tunnelresSize > 1024 * 1024) {
+          console.debug(
+            `📤 Message too large : req with id ${id} and size ${tunnelresSize} bytes !!
+            `
+          );
+
+          console.log(
+            `[${headers?.["x-real-ip"]}] ${chalk[statusColor](
+              res!.status
+            )}  ${method}  > ${path} ${chalk.red("too large !!")} `
+          );
+
+          return;
+        }
+        console.log(
+          `[${headers?.["x-real-ip"]}] ${chalk[statusColor](
+            res!.status
+          )}  ${method}  > ${path}  ` 
         );
+
+        ws.send(tunnelres);
+
         console.debug(`✅ Handled request ${id} with status ${res!.status}`);
       } catch (err) {
         console.error("❌ Error handling message:", err);
