@@ -59,6 +59,3 @@ Use the `-g` or `--global` flag to install once and run via `dotunnel` instead o
 4. Push to the branch (`git push origin feature-name`)
 5. Open a Pull Request
 
-## License
-
-MIT © Your Name
