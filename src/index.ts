@@ -352,7 +352,9 @@ async function main() {
           )
         );
         console.log(chalk.yellow("🔁 Retrying ..."));
-        launchproxy();
+        setTimeout(() => {
+          launchproxy();
+        }, 1000);
       }
     });
 
