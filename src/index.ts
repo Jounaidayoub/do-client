@@ -275,7 +275,7 @@ async function main() {
               // "Content-Type": "application/json",
               ...(headers || {}),
             },
-            body: method !== "GET" ? JSON.stringify(body || {}) : null,
+            body: body,
           });
         } catch (err) {
           console.log(
