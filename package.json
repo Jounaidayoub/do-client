@@ -12,6 +12,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "url": "https://github.com/jounaidayoub/do-client.git",
+    "type": "git"
+  },
   "type": "module",
   "dependencies": {
     "@types/inquirer": "^9.0.9",
