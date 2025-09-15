@@ -1,12 +1,17 @@
 # doTunnel
 
-Expose your local server to the internet without configuring firewalls or port forwarding. `Dotunnel` creates a secure HTTP tunnel so you can share your localhost with the internet in seconds.
+Expose your local server to the internet without configuring firewalls or port forwarding. [Dotunnel](https://github.com/jounaidayoub/do) creates a secure HTTP tunnel so you can share your localhost with the internet in seconds. 
+
+Wanna test a webhook ? quick share/demo for webapp , API , Test on mobile ? or sharing anything running on your localhost ? Dotunnel is here for u , easy and fast .
+
+[![npm version](https://badge.fury.io/js/dotunnel.svg)](https://badge.fury.io/js/dotunnel) 
+
 
 ## Features
 
 - HTTP tunneling
 - Zero firewall or port-forwarding setup
-- Single-command startup with `npx`
+- Single-command startup with `npx dotunnel`
 - Runs on Cloudflare Edge network for low latency (⚡ Blazingly fast!)
 
 ## Quick Start
@@ -53,7 +58,7 @@ Use the `-g` or `--global` flag to install once and run via `dotunnel` instead o
 
 ## Contributing
 
-1. Fork the repository
+1. Fork this  [repository](https://github.com/jounaidayoub/do-client)
 2. Create a feature branch (`git checkout -b feature-name`)
 3. Commit your changes (`git commit -m "Add new feature"`)
 4. Push to the branch (`git push origin feature-name`)
