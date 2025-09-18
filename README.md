@@ -5,6 +5,8 @@ Expose your local server to the internet without configuring firewalls or port f
 Wanna test a webhook ? quick share/demo for webapp , API , Test on mobile ? or sharing anything running on your localhost ? Dotunnel is here for u , easy and fast .
 
 [![npm version](https://badge.fury.io/js/dotunnel.svg)](https://badge.fury.io/js/dotunnel) 
+![NPM Downloads](https://img.shields.io/npm/d18m/dotunnel)
+
 
 
 ## Features
@@ -58,7 +60,7 @@ Use the `-g` or `--global` flag to install once and run via `dotunnel` instead o
 
 ## Contributing
 
-1. Fork this  [repository](https://github.com/jounaidayoub/do-client)
+1. Fork this  [repository](https://github.com/jounaidayoub/dotunnel-client)
 2. Create a feature branch (`git checkout -b feature-name`)
 3. Commit your changes (`git commit -m "Add new feature"`)
 4. Push to the branch (`git push origin feature-name`)
