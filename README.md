@@ -1,6 +1,6 @@
 # doTunnel
 
-Expose your local server to the internet without configuring firewalls or port forwarding. [Dotunnel](https://github.com/jounaidayoub/do) creates a secure HTTP tunnel so you can share your localhost with the internet in seconds. 
+Expose your local server to the internet without configuring firewalls or port forwarding. [Dotunnel](https://github.com/jounaidayoub/dotunnel) creates a secure HTTP tunnel so you can share your localhost with the internet in seconds. 
 
 Wanna test a webhook ? quick share/demo for webapp , API , Test on mobile ? or sharing anything running on your localhost ? Dotunnel is here for u , easy and fast .
 
