@@ -32,7 +32,11 @@ const isProxyAvailable = async (proxy: string) => {
 
 const isPortopen = async (port: number) => {
   try {
-    const res = await fetch(`http://localhost:${port}`);
+    const res = await fetch(`http://localhost:${port}`,{
+      headers:{
+        "connection":"Close"
+      }
+    });
   } catch (err) {
     return false;
   }
@@ -148,7 +152,7 @@ function showBanner() {
   );
   console.log("");
 
-  console.log(chalk.greenBright("Fast • Secure • Simple"));
+  // console.log(chalk.greenBright("Fast • Secure • Simple"));
   console.log("");
   console.log(createBanner(" Welcome to DoTunnel client 🚀", 50));
   showExampleBanner();
@@ -228,6 +232,7 @@ async function main() {
 
     ws!.on("open", async () => {
       spinner.succeed();
+      console.log("")
       console.log(`🌐 Forwarding to: ${chalk.cyan(LOCAL_BASE)}`);
       console.log(
         `🔗 Public URL:    ${chalk.cyan(
@@ -379,7 +384,7 @@ async function main() {
 
     // Graceful shutdown
     const shutdown = () => {
-      console.log(" Shutting down...");
+      console.log("Thank u for using doTunnel, Shutting down...");
       try {
         ws.close(1000, "client-closed");
       } catch {
